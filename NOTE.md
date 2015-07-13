@@ -225,3 +225,132 @@
   - 詳細度が上がるため。
 
 5 min
+
+## 3-3 SMACSS
+
+- SMACSS
+- OOCSS のコンセプトをベースにつくられたガイドライン
+- カテゴリ
+  - Base
+  - Layout
+  - Module
+  - State
+  - Theme
+- Base
+  - 要素のデフォルト
+- Layout
+  - ヘッダー・フッターのようなセクションをつくる要素へのルール
+  - ID セレクタでも良い
+  - Grid Layout もここに含める
+
+5 min
+
+- Module
+  - ボタンや見出しなど再利用できるものはここに含める
+- State
+  - 状態を表すクラス
+  - JavaScript で制御で切り替えられる想定
+  - is- prefix をつける
+  - !important も許容する
+  - メディアクエリも含む
+  - 他のクラスとの組み合わせで定義する `.tab.is-active {}`
+
+5 min
+
+- Theme
+  - テーマ切り替え用
+
+- クラス名にコンポーネント名を含む `.alert.warning` ではなく `.alert-warning`
+  - スタイルの競合と汚染のリスクを減らせる
+  - どのコンポーネントを拡張するものかが分かる
+  - セレクタの詳細度を減らせる
+- HTML と CSS とを分離する
+  - なるべく class を振る
+  - HTML 構造への依存を減らす
+
+5 min
+
+- 個人的な意見として BEM などの長大なクラス名は気持ち悪いと感じる。
+  - 例えばユーザー名を含んでいるブロックはせいぜい user-name であって、sidebar--user-profile--user-name ではない。 CSS の実装上の都合を HTML に押し付けすぎているように感じる。
+- クラスを振っておくのは良いアプローチだと思う。ただの要素ではなく何を含む要素なのかを明確にできるので HTML としても正しい。
+- HTML 構造への依存を減らすのも良い。ただ完全になくそうと思うとおそらく BEM のような一意な class を振らないといけなくなるので
+
+5 min
+
+## 3-4 BEM
+
+- BEM : Block Element Modifier
+- Block 命名の基点 `.alert`
+- Element Block を構成する要素 `.alert__title`
+- Modifier Block または Element のバリエーション違いの要素 `.alert_warning`
+- MindBEMding では区切り記号として `__` と `--` とを使う
+  - Element が `__`
+  - Modifier が `--`
+
+まとめると
+
+- 構成要素とバリエーションとを特殊な文字で区切ることで明確にする
+
+5 min
+
+## 3-5 MCSS
+
+- MCSS : Multilayer CSS
+- 構成
+  - Foundation
+  - Base
+  - Project
+  - Cosmetic
+- レイヤー間の依存関係を明確にしたもの
+- クラス名の省略も推奨している
+
+5 min
+
+- Foundation …… SMACSS の Base 。 reset  / normalize
+- Base …… 再利用可能な部品 SMACSS の Module 。Boostrap などの一部をこのレイヤーに含めても良い。
+- Project …… クラスを組み合わせることで Base レイヤーを上書きできる。Base レイヤーが Project レイヤーを上書きはできない。
+- Cosmetic …… リンクカラーやグローバルな modifier など。ひとつの要素に三個まで。
+
+5 min
+
+- Context ……  必要に応じてルールを上書きできる。メディアクエリーなど。
+
+レイヤーとしてつくって下層をさわらないのはよくある仕組みだけど良いアイデアだと思う。
+ほかのフレームワークにしても同じような制約は暗黙のうちにあるような気がする。
+
+まとめると
+
+- Multilayer 化してレイヤー間に依存関係をもたせている
+
+5 min
+
+## 3-6 FLOCSS
+
+- FLOCSS
+- Foundation / Layout / Object
+- Foundation …… SMACSS の Base / MCSS の Foundation
+- Layout …… SMACSS の Layout (汎用のものは Object に含める)
+- Object …… 再利用可能なコンポーネント
+  - Component …… MCSS の Base
+  - Project …… MCSS の Project
+  - Utility …… MCSS の Cosmetic / clearfix
+
+5 min
+
+- クラスの命名は BEM
+- 状態を表す Modifier は SMACSS の State のように is- prefix を付与する。
+- is- そのもののルールを定義しない。
+- その他の prefix もつける
+
+5 min
+
+- カスケーディング
+- レイヤー間のカスケーディングや子孫セレクタによるカスケーディングを禁止
+
+自分ルールを検討
+
+- 層の深さは 3 層で良い気がする。
+- is- は良いがそれ以外の  prefix はあまり好きでない。
+- BEM も好きでない。
+- マルチクラスを避けられないものか。
+- コンポーネントについてはクラスとして定義せず mixin とするほうが良い
